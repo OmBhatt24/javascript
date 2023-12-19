@@ -18,6 +18,7 @@ console.log(Object.assign(person1, person2)); // ? first param : target , second
 
 // ? creates a new object, using an existing object as the prototype of the newly created object.
 const me = Object.create(person);
+console.log(`me:`, me);
 // ? here me.prototype is equal to person.prototype
 
 me.name = "Om"; // "name" is a property set on "me", but not on "person"

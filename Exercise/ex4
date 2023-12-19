@@ -1,0 +1,33 @@
+For which of the data types, switch case will work fine?
+
+1. arrays
+2. numbers
+3. boolean
+4. strings
+5. objects
+
+Answer: switch case will work fine for numbers , boolean and strings . it will not work well in case of arrays and objects
+
+Which of the following string methods do affect the original string
+
+1. trim
+2. slice
+3. replace
+4. concat
+5. toUpperCase
+6. split
+7. substring
+   Answer: all string methods stated above does NOT affect the original string instead it will return the new string. because String are immutable in js
+
+Different ways to join two strings
+
+1. using + operator : str1 + str2
+2. using concat method : str1.concat(str2)
+3. using template literal : `${str1}${str2}`
+
+Number of ways I can convert a string to a number?
+
+1. using Number constructor . obj = new Number('2') => it will return object not number we have to use obj.valueOf() to get the primitive value of the object
+2. using parseInt : Number.parseInt('23') it will try to parse as long as it get digits . "23" return 23 number . '12sljf' return 12 . 'sdfd' returns NaN
+3. using type coercion +'12' this will convert it to number 12
+   console.log(typeof +"12"); this will return number

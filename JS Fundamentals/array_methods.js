@@ -27,3 +27,7 @@ console.log(`includes:${arr2.includes(3)}`); // ? return true if search element 
 console.log(`find:${arr.find((el) => el === "!")}`); // ? return element which satisfies specified element
 console.log(`findIndex:${arr.findIndex((el) => el === "!")}`); // ? return index of the element which satisfies specified element
 console.log(`join:${arr.join(" ")}`); // ? return string . Add all the elements of an array into a string, separated by the specified separator string.
+console.log(`slice:${arr.splice(1, 1)}`); // ? splice(start, deleteCount, item1, item2, /* …, */ itemN) . here item 1 to N is item we want to insert . original array is mutated.
+console.log(arr);
+arr.splice(1, 1); // ? return removed element
+console.log(arr);

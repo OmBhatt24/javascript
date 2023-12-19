@@ -8,6 +8,6 @@
 
 var carName = "BMW";
 var carName;
-// console.log(carName);
+console.log(carName);
 
 // const val;
