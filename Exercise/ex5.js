@@ -17,12 +17,28 @@ let nestedData = {
 };
 // Using a for loop, console.log all of the numbers in the primeNumbers array.
 console.log(`primeNumbers:`);
-nestedData.innerData.numberData.primeNumbers.forEach((num) => console.log(num));
+// > todo : optional chaining
+if (
+  nestedData &&
+  nestedData.innerData &&
+  nestedData.innerData.primeNumbers &&
+  nestedData.innerData.primeNumbers
+)
+  nestedData.innerData.numberData.primeNumbers.forEach((num) =>
+    console.log(num)
+  );
 // Using a for loop, console.log all of the even Fibonnaci numbers.
 console.log(`even Fibonnaci numbers:`);
-nestedData.innerData.numberData.fibonnaci
-  .filter((el) => el % 2 === 0)
-  .forEach((el) => console.log(el));
+// > todo : do in one iteration
+if (
+  nestedData &&
+  nestedData.innerData &&
+  nestedData.innerData.numberData &&
+  nestedData.innerData.numberData.fibonnaci
+)
+  nestedData.innerData.numberData.fibonnaci.forEach((el) => {
+    if (el % 2 === 0) console.log(el);
+  });
 // Console.log the value "second" inside the order array.
 console.log(
   `second order:${nestedData.innerData.order[1]} snack:${nestedData.innerData.snacks[1]}`
@@ -60,7 +76,13 @@ let nestedObject = {
     },
   },
   addSpeaker(speaker) {
-    if (typeof speaker !== "object" || !speaker.name) {
+    // < todo : add condition of arrays and null
+    if (
+      typeof speaker !== "object" ||
+      speaker === null ||
+      Array.isArray(speaker) ||
+      !speaker.name
+    ) {
       console.log("enter valid speaker with a name");
       return;
     }
@@ -68,7 +90,12 @@ let nestedObject = {
     return this;
   },
   addLanguage(lang) {
-    if (typeof lang !== "object" || !lang[Object.keys(lang)[0]].hello) {
+    if (
+      typeof lang !== "object" ||
+      lang === null ||
+      Array.isArray(lang) ||
+      !lang[Object.keys(lang)[0]].hello
+    ) {
       console.log("enter valid language");
       return;
     }
@@ -78,11 +105,14 @@ let nestedObject = {
     return this;
   },
   addCountry(country) {
+    let countryName = country[Object.keys(country)[0]];
     if (
       typeof country !== "object" ||
+      Array.isArray(country) ||
+      country === null ||
       typeof country[Object.keys(country)[0]] !== "object" ||
-      !Object.keys(country[Object.keys(country)[0]]).includes("capital") ||
-      !Object.keys(country[Object.keys(country)[0]]).includes("population")
+      !Object.keys(countryName).includes("capital") ||
+      !Object.keys(countryName).includes("population")
     ) {
       console.log("enter valid country");
       return;

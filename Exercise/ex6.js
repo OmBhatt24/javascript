@@ -2,10 +2,21 @@
 const obj1 = { hair: "long", beard: true };
 const obj2 = { hair: "long", beard: false };
 
-const compareTwoObjects = (obj1, obj2) => {
-  return JSON.stringify(obj1) === JSON.stringify(obj2);
-};
+// > todo:  do it with Object.keys and Object.values
+const compareTwoArrays = (arr1, arr2) =>
+  arr1.length === arr2.length &&
+  Array.from(arr1).every((val, idx) => val === arr2[idx]);
 
+// console.log(compareTwoArrays([1, 2], [1, 2]));
+const compareTwoObjects = (obj1, obj2) => {
+  // ? approach 1
+  // return JSON.stringify(obj1) === JSON.stringify(obj2);
+  return (
+    compareTwoArrays(Object.keys(obj1), Object.keys(obj2)) &&
+    compareTwoArrays(Object.values(obj1), Object.values(obj2))
+  );
+};
+console.log(compareTwoArrays(obj1, obj2));
 // * Write a program to convert string to a 2D array of objects. The first row of the string is used as the title.
 // ? inputString = "col1,col2\na,b\nc,d"
 // ? output [{'col1': 'a', 'col2': 'b'}, {'col1': 'c', 'col2': 'd'}]
@@ -13,6 +24,8 @@ const stringTo2DArrayOfObject = (str) => {
   const rows = str.split("\n");
   const keys = rows.splice(0, 1)[0].split(",");
   let result = [];
+
+  // todo : try with single loop
   rows.forEach((row) => {
     const values = row.split(",");
     let entries = [];
@@ -25,15 +38,22 @@ const stringTo2DArrayOfObject = (str) => {
 };
 
 // * Write a program to convert an array of objects to a string. That contains dynamic columns and de limiter specified.
-// ?  input = [{col1:'a', col2:'b'}, {'col1': 'c', 'col2': 'd'}]
+// ?  input = [{col1:'a', col2:'b'}, {'col1': 'c', 'col2': 'd','col3':'e'}]
 // ? output: 'Col1,col2\na,b'
-
+// const input1 = [
+//   { col1: "a", col2: "b" },
+//   { col1: "c", col2: "d", col3: "e" },
+// ];
 const TwoDArrayOfObjectToString = (arrayOfObj) => {
   let ans = "";
-
+  //  todo do with set
+  const keysSet = new Set();
   arrayOfObj.forEach((obj) => {
-    if (ans === "") {
-      ans += Object.keys(obj).join(",");
+    Object.keys(obj).forEach((key) => keysSet.add(key));
+  });
+  arrayOfObj.forEach((obj, idx) => {
+    if (idx === 0) {
+      ans += Array.from(keysSet).join(",");
       ans += "\n";
     }
     ans += Object.values(obj).join(",");
@@ -42,38 +62,71 @@ const TwoDArrayOfObjectToString = (arrayOfObj) => {
 
   return ans.slice(0, -1);
 };
-
+// console.log(TwoDArrayOfObjectToString(input1));
 // * Write a program to replace the names of multiple object keys.
 // ? output { firstName:'JJ', Role:'Programmer', age:22 }
 // const obj = { name: "JJ", job: "Programmer", age: 22 };
 // const renameKey = { name: "firstName", job: "Role" };
 const replaceNamesOfKeys = (obj, renameKey) => {
-  const entries = Object.entries(obj);
+  // > todo : mutate original object
+  // ? approach 1
+  // const entries = Object.entries(obj);
+  // const keysToBeChanged = Object.keys(renameKey);
+  // entries.forEach((entry) => {
+  //   if (keysToBeChanged.includes(entry[0])) {
+  //     entry[0] = renameKey[entry[0]];
+  //   }
+  // });
+  // return Object.fromEntries(entries);
+
+  // ? approach 2
   const keysToBeChanged = Object.keys(renameKey);
-  entries.forEach((entry) => {
-    if (keysToBeChanged.includes(entry[0])) {
-      entry[0] = renameKey[entry[0]];
+  keysToBeChanged.forEach((keyToChange) => {
+    obj[renameKey[keyToChange]] = obj[keyToChange];
+    delete obj[keyToChange];
+  });
+  return obj;
+};
+// console.log(replaceNamesOfKeys(obj, renameKey));
+// * Write a program to filter out the unique values in an array.
+const input = [1, 2, 2, 3, 4, 4, 5];
+// > todo take one output array
+
+const uniqueValues = (arr) => {
+  let output = [];
+  // ? approach 1
+  // let mp = new Map();
+  // arr.forEach((el) => {
+  //   if (mp.has(el)) mp.set(el, mp.get(el) + 1);
+  //   else mp.set(el, 1);
+  // });
+  // let ans = [];
+  // mp.forEach((val, key, mp) => {
+  //   if (val === 1) ans.push(key);
+  // });
+  // ? approach 2
+  output.push(arr[0]);
+  for (let index = 1; index < arr.length; index++) {
+    const element = arr[index];
+    let foundIdx = output.findIndex((el) => el === element);
+    if (foundIdx !== -1) output.splice(foundIdx, 1);
+    else output.push(element);
+  }
+  return output;
+};
+const nonUniqueValues = (input) => {
+  let temp = input[0];
+  let output = [];
+  for (let index = 1; index < input.length; index++) {
+    const element = input[index];
+    if (element === temp) {
+      output.push(element);
+    } else {
+      temp = element;
     }
-  });
-  return Object.fromEntries(entries);
+  }
+  return output;
 };
-
-// * Write a program to filter out the non-unique values in an array.
-// const input = [1, 2, 2, 3, 4, 4, 5];
-
-const removeDuplicates = (arr) => {
-  let mp = new Map();
-  arr.forEach((el) => {
-    if (mp.has(el)) mp.set(el, mp.get(el) + 1);
-    else mp.set(el, 1);
-  });
-  let ans = [];
-  mp.forEach((val, key, mp) => {
-    if (val === 1) ans.push(key);
-  });
-  return ans;
-};
-
 // * Write a program to remove the key-value pairs to the given keys.
 // ? output {"a":1,"c":3}
 // const input = { a: 1, b: "2", c: 3 };
@@ -87,12 +140,13 @@ const removeKeyValuePairs = (input, removeKey) => {
 // * Write a program to convert time 24 hours to 12 hours.
 // input1 = 0 ;  12am
 // input2 = 13 ; 1pm
+// >  todo do cyclic
 const convert24HoursTo12Hours = (input) => {
   if (input === 0) return "12am";
-  else if (input === 24) return "";
+  else if (input === 12) return "12pm";
+  else if (input > 24) return convert24HoursTo12Hours(input % 24);
   return input > 12 || input < 24 ? `${input - 12}pm` : `${input}am`;
 };
-
 // * Write a program that will return true if the string is y/yes or false if the string is n/no
 const returnTrueFalse = (input) => {
   if (input.match(/^y(es)?$/i)) {
