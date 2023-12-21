@@ -144,8 +144,8 @@ const removeKeyValuePairs = (input, removeKey) => {
 const convert24HoursTo12Hours = (input) => {
   if (input === 0) return "12am";
   else if (input === 12) return "12pm";
-  else if (input > 24) return convert24HoursTo12Hours(input % 24);
-  return input > 12 || input < 24 ? `${input - 12}pm` : `${input}am`;
+  else if (input >= 24) return convert24HoursTo12Hours(input % 24);
+  return input > 12 && input < 24 ? `${input - 12}pm` : `${input}am`;
 };
 // * Write a program that will return true if the string is y/yes or false if the string is n/no
 const returnTrueFalse = (input) => {
