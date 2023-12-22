@@ -57,7 +57,9 @@ const findMissingNumber = (arr) => {
   return expectedSum - sum;
 };
 // console.log(findMissingNumber([1, 2, 4, 5]));
+
 // 5. Will the below code return any error? If yes, identify the error.
+// No it will not throw any error. but it can throw warning because fetch a Web API so it will give us warning it is experimental feature. else this is correct code to get data from API.
 
 function fetchData(callback) {
   fetch("https://jsonplaceholder.typicode.com/todos/1") // ? jsonplaceholder api
@@ -72,4 +74,4 @@ fetchData(function (error, data) {
   } else {
     console.log("Data:", data);
   }
-}); // ? missing
+});
